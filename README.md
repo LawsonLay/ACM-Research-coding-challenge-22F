@@ -1,48 +1,96 @@
-# ACM Research coding challenge (Fall 2022)
+**For the ACM Coding Challenge,**
 
-This semester's challenge is especially open-ended. [Here is a dataset](https://www.kaggle.com/datasets/chancev/carsforsale) on Kaggle called "CarsForSale". It contains data scraped from the online car marketplace Cars.com. Each row contains 25 pieces of information about a car's listing, such as its price, year, model, and color.
+> Accident-prone Cars
+by Lawson Lay
 
-The challenge is to do *something interesting* with the data. Can you find a pattern, answer a question, or create a visualization? In case nothing comes to mind, here are some ideas, with varying complexity:
+The goal of this program is to sort data from the given CarsForSale's cars_raw.csv based on certain conditions that are deemed to contribute to a car's likelihood to be in an accident.
+The conditions to which a car is determined to be more accident prone will be based on the following articles:
+* https://insurify.com/insights/car-models-with-the-most-accidents-2021/
+* https://www.855mikewins.com/michigan-car-accident-lawyer/is-your-car-one-of-the-10-most-accident-prone-vehicles/
+* https://www.cglawoffices.com/blog/2022/06/the-most-accident-prone-types-of-vehicles/
+* https://www.collisionrepairmag.com/eye-catching-crashes-sports-cars-found-to-be-particularly-accident-prone-study-finds/
 
-- What qualities about a car do buyers seem to value the most?
-- Make a graph to visualize the most popular car models over time.
-- What colors of cars are most expensive?
-- Do different brands try to appeal to people looking for different things?
-- Come up with your own algorithm to figure out how good of a deal a listing is and compare it to the one in the dataset (`DealType`).
-- Use [cluster analysis](https://en.wikipedia.org/wiki/Cluster_analysis) to group the cars into categories.
-- How do people's taste in cars differ between states?
-- Train a machine learning model to predict some aspect of a car based on other information from its listing.
+According to the following articles, the common attributes of cars that are more accident-prone tend to have are:
+* Sport, SUV, or Luxury Type
+* High-selling (ex. Ford F150)
+* Large Size
+* Imported
+* Old Age (Discontinued)
 
-However, we strongly encourage you to come up with your own problem to solve!
+While a proper research into this topic might go something like:
+*To what extent does a car's attributes affect a driver's likelihood to be in a accident?*
 
-You can use any programming language, framework, or library you want, but we recommend [creating a notebook in Kaggle](https://www.kaggle.com/docs/notebooks) and using Python. This will run in your browser, interlaces code with documentation, allows you to import the CarsForSale dataset easily by pressing the "Add data" button, and gives you access to Python's high-quality, high-level libraries for working with data. [Learn more about data science in Python.](https://www.w3schools.com/datascience/ds_python.asp)
+Which could have a theoretical counter-argument stating that it is mostly the driver's own fault for most vehicular accidents.
 
-## How to submit your solution
+However, that's not the goal today, so one quick Google search of "Accident-prone cars", and here we are now.
 
-1. [Create a  **public**  fork of this repository](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and name it  `ACM-Research-coding-challenge-22F` (click the "Fork" button in the top right).
+Looking at the CarsForSale spreadsheet, the columns which meet or are related to our aforementioned accident-prone attributes are as follows:
+* Reliability Rating
+* Mileage
+* -Transmission-
+* -Engine-
+* Performance Rating
+* Price
+* Year
+* Make
+* Used/New
+* Deal Type
+*Transmission and Engine omitted due to added parsing complexity.*
 
-2. Replace this README file with a description ([written in Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/about-writing-and-formatting-on-github)) of your solution. Regardless of your success, describe the problem you set out to solve and how you did it. Split it up into sections with headers, and, if relevant, include figures.
+Now with our interesting columns defined, the next step is to determine how being more accident-prone will be visualized.
+For time-crunch sake, a simple "accident-prone" score calculated by some makeshift algorithm will be used. A list of the top 10 accident prone cars will be printed out along with their "accident-prone" score.
 
-3. Make sure to include all relevant files in your fork. If you made the project in a Kaggle notebook, click **File** → **Download Notebook** to download it as an `.ipynb` file.
+To create a accident-prone score, the different attributes of a car must be weighted against each other in their "accident-prone"-ness.
+According to the four article's ratings on most accident prone cars, what the most accident-prone cars have in common are their type. Specifically, them being of sport or luxury type. Second is affordability therefore availability. If more people can buy a car, the car will be more common on the streets, therefore more common to be in an accident. Then the third factor this program will look at is age, since another common factor is old age of the vehicle.
 
-4. You may have to "clone" the fork you made to edit files locally on your computer and "push" them to GitHub. Learn how to do that [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+The columns can then be split into three main score factors divided into subfactors:
+> Type
+* Make
+* Performance Rating
 
-4. Submit the link to your fork in this [form](http://apply.acmutd.co/research-coding-challenge).
+> Accessibility
+* Price
+* Deal Type
 
-## No collaboration policy
+> Age
+* Reliability Rating
+* Year
+* Used/New
+* Mileage
 
-**You may not collaborate with anyone on this challenge.** You _are_ allowed (and encouraged) to use internet documentation. If you use existing code (either from Github, Stack Overflow, or other sources), **please cite your sources in the README**.
+Note that accessibility is referring to the ability of many people to access or buy the car.
 
-## Timing
+The main three factors don't contradict each other, so a high level look at the score algorithm could look like the following with weights:
 
-Please don't spend too long on this project: **30 to 60 minutes** is reasonable. It's okay to put more time into your submission than that, but we don't expect you to get that much done; we really don't want this challenge to be a burden!
+**ACCIDENT PRONE SCORE = (0.60)TYPE + (0.40)ACCESS + (0.20)AGE**
+ 
+Then define the subfactors:
 
-If you're *completely new* to this kind of project, however, it will likely take you more than an hour. This is a *densely useful* project to go through (you will learn a lot), so we believe this is justified.
+**TYPE = MAKE + PERFORMANCE_RATING**
 
-## Assessment criteria
+**ACCESS = DEAL TYPE - PRICE**
 
-Submissions will be evaluated holistically, in combination with the rest of your application. We will consider your effort, use of external resources, how you approached the problem, and presentation, among other considerations.
+**AGE = YEAR + USED_NEW + MILEAGE - RELIABILITY_RATING**
 
-## Support and questions
+*Subfactor scales in the code*
 
-Feel free to ask for clarifications in the #research-qna channel in the [ACM UTD Discord server](https://discord.gg/nJxRdKdG4d)! You can also directly message Roman Hauksson on Discord: `RomanHauksson#3458`.
+For type, the make and performance rating can add to the accident prone score from being luxury and performing too well (Sport car like).
+For access, the greater the deal and the lower the price, the accessible the car will be.
+For age, how old a car is from manufacture date, if it is used, and the mileage are all additive to the accident prone score. 
+The only exception is reliability rating, where a lower reliability rating will equate to a greater accident prone score.
+
+**RESULTS**
+From this algorithm, the conclusion is that the most accident prone cars from the dataset are:
+
+1. 2005 Used Lexus ES 330 Base (A5)
+2. 2003 Used Mercedes-Benz SL-Class SL500 Roadster
+3. 2010 Used BMW 535 i
+4. 2005 Used Porsche Cayenne S
+5. 2008 Used Lexus RX 350 Base
+6. 2008 Used Mercedes Benz S-Class S 550 4MATIC
+7. 2011 Used BMW 328 i xDrive
+
+*Omitted duplicates*
+
+Overall, the results are satisfactory. A Accident-prone score was produced. However, due to time constraints, some other factors were not considered which could make these results inaccurate.
+A new algorithm with these factors considered will provide more accurate results.
