@@ -80,6 +80,7 @@ For age, how old a car is from manufacture date, if it is used, and the mileage 
 The only exception is reliability rating, where a lower reliability rating will equate to a greater accident prone score.
 
 **RESULTS**
+
 From this algorithm, the conclusion is that the most accident prone cars from the dataset are:
 
 1. 2005 Used Lexus ES 330 Base (A5)
