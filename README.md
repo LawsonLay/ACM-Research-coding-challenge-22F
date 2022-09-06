@@ -1,7 +1,6 @@
 **For the ACM Coding Challenge,**
 
-> Accident-prone Cars
-by Lawson Lay
+> Accident-prone Cars by Lawson Lay
 
 The goal of this program is to sort data from the given CarsForSale's cars_raw.csv based on certain conditions that are deemed to contribute to a car's likelihood to be in an accident.
 The conditions to which a car is determined to be more accident prone will be based on the following articles:
@@ -35,6 +34,7 @@ Looking at the CarsForSale spreadsheet, the columns which meet or are related to
 * Make
 * Used/New
 * Deal Type
+
 *Transmission and Engine omitted due to added parsing complexity.*
 
 Now with our interesting columns defined, the next step is to determine how being more accident-prone will be visualized.
