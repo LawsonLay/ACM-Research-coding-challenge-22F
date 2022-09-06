@@ -35,7 +35,7 @@ Looking at the CarsForSale spreadsheet, the columns which meet or are related to
 * Used/New
 * Deal Type
 
-*Transmission and Engine omitted due to added parsing complexity.*
+*NOTE: Transmission and Engine omitted due to added parsing complexity.*
 
 Now with our interesting columns defined, the next step is to determine how being more accident-prone will be visualized.
 For time-crunch sake, a simple "accident-prone" score calculated by some makeshift algorithm will be used. A list of the top 10 accident prone cars will be printed out along with their "accident-prone" score.
@@ -72,7 +72,7 @@ Then define the subfactors:
 
 **AGE = YEAR + USED_NEW + MILEAGE - RELIABILITY_RATING**
 
-*Subfactor scales in the code*
+*NOTE: Subfactor scales in the code*
 
 For type, the make and performance rating can add to the accident prone score from being luxury and performing too well (Sport car like).
 For access, the greater the deal and the lower the price, the accessible the car will be.
